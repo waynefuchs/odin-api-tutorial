@@ -1,15 +1,15 @@
-GET http://localhost:3000/ HTTP/1.1
+GET http://localhost:3000/users HTTP/1.1
 
 ###
 
-POST http://localhost:3000/ HTTP/1.1
+POST http://localhost:3000/users HTTP/1.1
 
 ###
 
-PUT http://localhost:3000/ HTTP/1.1
+PUT http://localhost:3000/users/waynefuchs HTTP/1.1
 
 ###
 
-DELETE http://localhost:3000/ HTTP/1.1
+DELETE http://localhost:3000/users/waynefuchs HTTP/1.1
 
 ###
