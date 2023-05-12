@@ -1,15 +1,35 @@
-GET http://localhost:3000/users HTTP/1.1
+////////////////////////////////////////////////////////
+// USERS
+
+GET http://localhost:3000/users
+// GET All Users
 
 ###
 
-POST http://localhost:3000/users HTTP/1.1
+GET http://localhost:3000/users/1
+// GET User with id of 1
 
 ###
 
-PUT http://localhost:3000/users/waynefuchs HTTP/1.1
+POST http://localhost:3000/users
 
 ###
 
-DELETE http://localhost:3000/users/waynefuchs HTTP/1.1
+PUT http://localhost:3000/users/1
 
 ###
+
+DELETE http://localhost:3000/users/1
+
+###
+
+
+///////////////////////////////////////////////////////
+// MESSAGES
+GET http://localhost:3000/messages
+// Get All messages
+
+###
+
+GET http://localhost:3000/messages/1
+// Get message with id of 1
