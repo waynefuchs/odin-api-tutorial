@@ -33,3 +33,20 @@ GET http://localhost:3000/messages
 
 GET http://localhost:3000/messages/1
 // Get message with id of 1
+
+### 
+
+GET http://localhost:3000/messages/438b2937-b584-4942-8661-4fc1a13ca1ab
+
+### 
+
+POST http://localhost:3000/messages
+content-type: application/json
+
+{
+  "text": "This is a test message"
+}
+
+###
+
+DELETE http://localhost:3000/messages/1
