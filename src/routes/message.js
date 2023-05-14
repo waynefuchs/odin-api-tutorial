@@ -1,4 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
+import { Op } from "sequelize";
+import models, { sequelize } from "../models/postgres/index.js";
 import { Router } from "express";
 
 const router = Router();
@@ -6,35 +7,48 @@ const router = Router();
 ////////////////////////////////////////////////////////////////////////////////
 // MESSAGES
 
-router.get("/", (req, res) => {
-  console.log("Messages rendering");
-  const messages = req.context.models.messages;
-  return res.send(Object.values(messages));
+router.get("/", async (req, res) => {
+  const messages = await models.Message.findAll({ raw: true });
+  return res.send(messages);
 });
 
-router.get("/:userId", (req, res) => {
-  const messages = req.context.models.messages;
-  return res.json(messages[req.params.userId]);
+router.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const messages = await models.Message.findAll({
+    where: { userId: { [Op.eq]: userId } },
+  });
+  return res.json(messages);
 });
 
-router.post("/", (req, res) => {
-  const id = uuidv4();
-  const messages = req.context.models.messages;
-  const sessionUserId = req.context.me.id;
-  const message = {
-    id,
-    text: req.body.text,
-    userId: sessionUserId,
-  };
-  messages[id] = message;
-  return res.send(message);
+router.post("/", async (req, res) => {
+  const userId = req.context.me.id;
+  const text = req.body.text;
+  const newMessage = await models.Message.create({
+    text,
+    userId,
+  });
+  return res.send(newMessage);
 });
 
-router.delete("/:messageId", (req, res) => {
-  const { [req.params.messageId]: messageToDelete, ...otherMessages } =
-    req.context.models.messages;
-  req.context.models.messages = otherMessages;
-  return res.send(messageToDelete);
+router.put("/:messageId", async (req, res) => {
+  const messageId = req.params.messageId;
+  const text = req.body.text;
+  await models.Message.update(
+    { text },
+    { where: { id: { [Op.eq]: messageId } } }
+  );
+  const updatedMessage = await models.Message.findAll({
+    where: { id: { [Op.eq]: messageId } },
+  });
+  return res.send(updatedMessage);
+});
+
+router.delete("/:messageId", async (req, res) => {
+  const messageId = req.params.messageId;
+  await models.Message.destroy({ where: { id: { [Op.eq]: messageId } } });
+  return res.send(
+    `DELETE HTTP method on messages/${messageId} resource complete`
+  );
 });
 
 export default router;

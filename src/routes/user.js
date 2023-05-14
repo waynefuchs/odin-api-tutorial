@@ -48,9 +48,7 @@ router.put("/:userId", async (req, res) => {
 router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   await models.User.destroy({ where: { id: { [Op.eq]: userId } } });
-  return res.send(
-    `DELETE HTTP method on users/${req.params.userId} resource complete`
-  );
+  return res.send(`DELETE HTTP method on users/${userId} resource complete`);
 });
 
 export default router;

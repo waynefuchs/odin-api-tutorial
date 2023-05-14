@@ -40,7 +40,7 @@ content-type: application/json
 
 ###
 
-DELETE http://localhost:3000/users/1
+DELETE http://localhost:3000/users/5
 
 ###
 
@@ -57,9 +57,6 @@ GET http://localhost:3000/messages/1
 
 ### 
 
-GET http://localhost:3000/messages/438b2937-b584-4942-8661-4fc1a13ca1ab
-
-### 
 
 POST http://localhost:3000/messages
 content-type: application/json
@@ -70,4 +67,13 @@ content-type: application/json
 
 ###
 
-DELETE http://localhost:3000/messages/2
+PUT http://localhost:3000/messages/7
+content-type: application/json
+
+{
+  "text": "I have updated the text for message 7"
+}
+
+###
+
+DELETE http://localhost:3000/messages/7
