@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", (req, res) => {
   const userList = req.context.models.users;
   const sessionUserId = req.context.me.id;
-  return res.send(userList[sessionUserId]);
+  return res.send(req.context.me);
 });
 
 export default router;
