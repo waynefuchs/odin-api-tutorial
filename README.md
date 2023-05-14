@@ -1,12 +1,10 @@
 # API Tutorial for The Odin Project
 
-## Links
-
-[The Tutorial](https://www.robinwieruch.de/node-express-server-rest-api/), written by Robin Wieruch. I also completed part four and implemented a few of the routes that weren't covered in the tutorial.
+The Odin Project assigned part 3 of a tutorial by Robin Wieruch titled [How to create a REST API with Express.js in Node.js](https://www.robinwieruch.de/node-express-server-rest-api/).
 
 ## Installation
 
-If anyone is wanting to run this, for whatever reason, Postgres is required. I used a [docker container](https://hub.docker.com/_/postgres) and pgAdmin to ensure that the ports were being forwarded properly, and initially to verify that sequalize was properly inserted data into the database.
+If anyone is wanting to run this, for whatever reason, PostgreSQL is required. I used a [docker container](https://hub.docker.com/_/postgres) and pgAdmin to ensure that the ports were being forwarded properly, and initially to verify that sequalize was properly inserted data into the database.
 
 Clone this repo.
 
