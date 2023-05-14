@@ -27,9 +27,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/", routes.router);
-app.use("/session", routes.session);
-app.use("/users", routes.user);
 app.use("/messages", routes.message);
+app.use("/users", routes.user);
+app.use("/session", routes.session);
 
 ////////////////////////////////////////////////////////////////////////////////
 // SERVER START
