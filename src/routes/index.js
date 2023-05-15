@@ -1,4 +1,4 @@
-import login from "./login.js";
+import { router as login } from "./login.js";
 import message from "./message.js";
 import session from "./session.js";
 import user from "./user.js";

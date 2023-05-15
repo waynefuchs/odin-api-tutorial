@@ -2,6 +2,8 @@
 
 The Odin Project assigned part 3 of a tutorial by Robin Wieruch titled [How to create a REST API with Express.js in Node.js](https://www.robinwieruch.de/node-express-server-rest-api/).
 
+[The Ultimate Guide to Passpor](https://dev.to/zachgoll/the-ultimate-guide-to-passport-js-k2l)
+
 ## Installation
 
 If anyone is wanting to run this, for whatever reason, PostgreSQL is required. I used a [docker container](https://hub.docker.com/_/postgres) and pgAdmin to ensure that the ports were being forwarded properly, and initially to verify that sequalize was properly inserted data into the database.

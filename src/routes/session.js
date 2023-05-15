@@ -1,14 +1,13 @@
 import { Router } from "express";
+import { passport } from "./login.js";
 
 const router = Router();
 
-////////////////////////////////////////////////////////////////////////////////
-// SESSION
-
 router.get("/", (req, res) => {
-  const userList = req.context.models.users;
-  const sessionUserId = req.context.me.id;
-  return res.send(req.context.me);
+  if (!req.user) return res.send("Not logged in");
+  const id = req.user.id;
+  const username = req.user.username;
+  return res.send({ id, username });
 });
 
 export default router;

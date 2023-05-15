@@ -16,12 +16,12 @@ POST http://localhost:3000/login
 content-type: application/json
 
 {
-  "username": "hello",
-  "password": "world"
+  "username": "alice",
+  "password": "abcdasdf"
 }
 
 ###
-
++
 ////////////////////////////////////////////////////////
 // USERS
 
