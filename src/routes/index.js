@@ -1,6 +1,7 @@
+import login from "./login.js";
+import message from "./message.js";
 import session from "./session.js";
 import user from "./user.js";
-import message from "./message.js";
 
 import { Router } from "express";
 
@@ -11,8 +12,9 @@ router.get("/", (req, res) => {
 });
 
 export default {
+  login,
+  message,
   router,
   session,
   user,
-  message,
 };

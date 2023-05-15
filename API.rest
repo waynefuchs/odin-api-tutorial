@@ -10,6 +10,19 @@ GET http://localhost:3000/session
 
 
 ////////////////////////////////////////////////////////
+// LOGIN
+
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+  "username": "hello",
+  "password": "world"
+}
+
+###
+
+////////////////////////////////////////////////////////
 // USERS
 
 GET http://localhost:3000/users
