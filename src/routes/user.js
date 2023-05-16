@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { Op } from "sequelize";
 import models, { sequelize } from "../models/postgres/index.js";
 import { generateHash } from "../util/hash.js";
 import { requireUserLogin } from "./login.js";
+import ResponseCode from "../ResponseCode.js";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get("", async (req, res) => {
     raw: true,
   });
 
-  res.send(users);
+  ResponseCode.success(req, res, users);
 });
 
 // Get (user)
@@ -23,17 +23,12 @@ router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
   const user = await models.User.findOne({
     attributes: ["id", "username"],
-    where: {
-      id: { [Op.eq]: userId },
-    },
+    where: { id: userId },
   });
 
-  if (!user) {
-    res.status(404);
-    return res.send("No user found");
-  }
+  if (!user) return ResponseCode.noUserFound(req, res);
 
-  res.send(user);
+  ResponseCode.success(req, res, user);
 });
 
 // Create
@@ -42,17 +37,9 @@ router.post("", requireUserLogin, async (req, res) => {
   const username = req.body.username;
   const { hash, salt } = generateHash("rabbit");
 
-  // Client error
-  if (!username) {
-    res.status(401);
-    return res.send("Malformed query");
-  }
-
-  // Server takes responsibility
-  if (!hash || !salt) {
-    res.status(500);
-    return res.send("Internal server error");
-  }
+  // check input
+  if (!username) return ResponseCode.malformedQuery(req, res);
+  if (!hash || !salt) return ResponseCode.internalServerError(req, res);
 
   // Create the object in postgresql
   let newUser;
@@ -65,15 +52,13 @@ router.post("", requireUserLogin, async (req, res) => {
   } catch (err) {
     newUser = undefined;
   }
+  if (!newUser) return ResponseCode.malformedQuery(req, res);
 
-  if (!newUser) {
-    res.status(401);
-    return res.send("Malformed query");
-  }
-
-  // Return a success code and the created user object
-  res.status(201);
-  res.send({ id: newUser.id, username: newUser.username });
+  // Send success code and the created user object
+  ResponseCode.created(req, res, {
+    id: newUser.id,
+    username: newUser.username,
+  });
 });
 
 // Update (specific user)
@@ -83,27 +68,19 @@ router.put("/:userId", requireUserLogin, async (req, res) => {
   const username = req.body.username;
 
   // Perform the update
-  await models.User.update(
-    { username },
-    { where: { id: { [Op.eq]: userId } } }
-  );
+  await models.User.update({ username }, { where: { id: userId } });
 
   // Select the user
   const updatedUser = await models.User.findOne({
     attributes: ["id", "username"],
-    where: {
-      id: { [Op.eq]: userId },
-    },
+    where: { id: userId },
   });
 
   // Error out if the user doesn't exist
-  if (!updatedUser) {
-    res.status(404);
-    return res.send("User not found");
-  }
+  if (!updatedUser) return ResponseCode.noUserFound(req, res);
 
   // Return the update user json
-  res.send(updatedUser);
+  ResponseCode.updated(req, res, updatedUser);
 });
 
 // Delete (specific user)
@@ -112,14 +89,12 @@ router.delete("/:userId", requireUserLogin, async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    await models.User.destroy({ where: { id: { [Op.eq]: userId } } });
+    await models.User.destroy({ where: { id: userId } });
   } catch (err) {
-    res.status(401);
-    return res.send("Malformed query");
+    return ResponseCode.malformedQuery(req, res);
   }
 
-  res.status(204);
-  res.end();
+  ResponseCode.deleted(req, res);
 });
 
 export default router;
