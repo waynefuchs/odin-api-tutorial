@@ -10,6 +10,7 @@ GET http://localhost:3000/messages/1
 ### 
 
 
+// Create a message (using the signed-in user)
 POST http://localhost:3000/messages
 content-type: application/json
 
@@ -19,6 +20,7 @@ content-type: application/json
 
 ###
 
+// Update the message text
 PUT http://localhost:3000/messages/7
 content-type: application/json
 

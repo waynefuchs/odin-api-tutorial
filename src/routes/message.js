@@ -1,6 +1,7 @@
 import models, { sequelize } from "../models/postgres/index.js";
 import { Router } from "express";
 import doesUserExist from "../util/user.js";
+import ResponseCode from "../ResponseCode.js";
 import { requireUserLogin } from "./login.js";
 
 const router = Router();
@@ -9,57 +10,68 @@ const router = Router();
 // No login required
 router.get("/", async (req, res) => {
   const messages = await models.Message.findAll({ raw: true });
-  return res.send(messages);
+  ResponseCode.success(req, res, messages);
 });
 
 // Get (specific message)
 // No login required
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
-  if (!doesUserExist({ id: userId })) {
-    res.status(401);
-    return res.send("Malformed query");
-  }
-  const messages = await models.Message.findAll({
-    where: { userId: userId },
-  });
-  return res.json(messages);
+
+  if (!doesUserExist({ id: userId })) return ResponseCode.noUserFound(req, res);
+  const messages = await models.Message.findAll({ where: { userId: userId } });
+  return ResponseCode.success(req, res, messages);
 });
 
 // Create
 // Login required
-router.post("/", async (req, res) => {
-  const userId = req.context.me.id;
-  const text = req.body.text;
-  const newMessage = await models.Message.create({
-    text,
-    userId,
-  });
-  return res.send(newMessage);
+router.post("/", requireUserLogin, async (req, res) => {
+  let newMessage;
+  try {
+    newMessage = await models.Message.create({
+      text: req.body.text,
+      userId: req.user.id,
+    });
+  } catch (err) {
+    newMessage = undefined;
+  }
+
+  if (!newMessage) return ResponseCode.malformedQuery(req, res);
+  return ResponseCode.success(req, res, newMessage);
 });
 
 // Update
 // Login required
-// Same User Required
-router.put("/:messageId", async (req, res) => {
-  const messageId = req.params.messageId;
-  const text = req.body.text;
-  await models.Message.update({ text }, { where: { id: messageId } });
-  const updatedMessage = await models.Message.findAll({
-    where: { id: { [Op.eq]: messageId } },
-  });
-  return res.send(updatedMessage);
+// Same User Required (ignoring for now because this isn't a real API)
+router.put("/:messageId", requireUserLogin, async (req, res) => {
+  let updatedMessage;
+  try {
+    // Update the message
+    await models.Message.update(
+      { text: req.body.text },
+      { where: { id: req.params.messageId } }
+    );
+    // Select the updated message
+    updatedMessage = await models.Message.findOne({
+      where: { id: req.params.messageId },
+    });
+  } catch (err) {
+    updatedMessage = undefined;
+  }
+  if (!updatedMessage) return ResponseCode.malformedQuery(req, res);
+  ResponseCode.success(req, res, updatedMessage);
 });
 
 // Delete
 // Login required
-// Same User Required
-router.delete("/:messageId", async (req, res) => {
-  const messageId = req.params.messageId;
-  await models.Message.destroy({ where: { id: messageId } });
-  return res.send(
-    `DELETE HTTP method on messages/${messageId} resource complete`
-  );
+// Same User Required (ignoring for now because this isn't a real API)
+router.delete("/:messageId", requireUserLogin, async (req, res) => {
+  try {
+    await models.Message.destroy({ where: { id: req.params.messageId } });
+    ResponseCode.deleted(req, res);
+  } catch (err) {
+    return ResponseCode.malformedQuery(req, res);
+  }
 });
 
 export default router;
