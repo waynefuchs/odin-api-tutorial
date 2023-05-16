@@ -4,10 +4,10 @@ import models, { sequelize } from "../models/postgres/index.js";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import { generateHash, validateHash } from "../util/hash.js";
-const router = Router();
+const login = Router();
 
 // ROUTE
-router.post(
+login.post(
   "",
   passport.authenticate("local", {
     failureRedirect: "/login",
@@ -19,17 +19,16 @@ router.post(
 
 // Validation Middleware
 passport.use(
-  new LocalStrategy(function (username, password, done) {
+  new LocalStrategy(function (username, password, next) {
     models.User.findOne({ where: { username: username } })
       .then((user) => {
-        console.log("USER", user);
-        if (!user) return done(null, false);
+        if (!user) return next(null, false);
         if (!validateHash(password, user.hash, user.salt))
-          return done(null, false);
-        return done(null, user);
+          return next(null, false);
+        return next(null, user);
       })
       .catch((err) => {
-        done(err);
+        next(err);
       });
   })
 );
@@ -48,4 +47,10 @@ passport.deserializeUser(function (id, done) {
   }
 });
 
-export { router, passport };
+function requireUserLogin(req, res, next) {
+  if (req.user) return next();
+  res.status(401);
+  return res.send("Not logged in");
+}
+
+export { login, passport, requireUserLogin };

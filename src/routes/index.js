@@ -1,4 +1,5 @@
-import { router as login } from "./login.js";
+import { login } from "./login.js";
+import logout from "./logout.js";
 import message from "./message.js";
 import session from "./session.js";
 import user from "./user.js";
@@ -13,6 +14,7 @@ router.get("/", (req, res) => {
 
 export default {
   login,
+  logout,
   message,
   router,
   session,

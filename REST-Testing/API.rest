@@ -1,5 +1,4 @@
 GET http://localhost:3000/
-// GET All Users
 
 ###
 
@@ -8,30 +7,25 @@ GET http://localhost:3000/session
 
 ###
 
-
-////////////////////////////////////////////////////////
-// LOGIN
-
 POST http://localhost:3000/login
 content-type: application/json
 
 {
-  "username": "alice",
-  "password": "abcdasdf"
+  "username": "eaglet",
+  "password": "eaglet"
 }
 
 ###
-+
-////////////////////////////////////////////////////////
-// USERS
+
+GET http://localhost:3000/logout
+
+###
 
 GET http://localhost:3000/users
-// GET All Users
 
 ###
 
 GET http://localhost:3000/users/1
-// GET User with id of 1
 
 ###
 
@@ -58,10 +52,7 @@ DELETE http://localhost:3000/users/5
 ###
 
 
-///////////////////////////////////////////////////////
-// MESSAGES
 GET http://localhost:3000/messages
-// Get All messages
 
 ###
 

@@ -2,7 +2,7 @@
 
 The Odin Project assigned part 3 of a tutorial by Robin Wieruch titled [How to create a REST API with Express.js in Node.js](https://www.robinwieruch.de/node-express-server-rest-api/).
 
-[The Ultimate Guide to Passpor](https://dev.to/zachgoll/the-ultimate-guide-to-passport-js-k2l)
+[The Ultimate Guide to Passport](https://dev.to/zachgoll/the-ultimate-guide-to-passport-js-k2l)
 
 ## Installation
 
@@ -22,6 +22,9 @@ PORT=3000
 DATABASE=api_tutorial
 DATABASE_USER={Your Postgre Admin User}
 DATABASE_PASSWORD={Your Database Password}
+
+# Session
+SECRET={Your Secret}
 ```
 
 You will need to create a database with the name specified in this file, for me it is `api_tutorial`.

@@ -1,8 +1,7 @@
 import { generateHash, validateHash } from "./util/hash.js";
 
 async function seedDB(models) {
-  let { hash, salt } = generateHash("abcd");
-
+  let { hash, salt } = generateHash("alice");
   await models.User.create(
     {
       username: "alice",
@@ -18,7 +17,7 @@ async function seedDB(models) {
     { include: [models.Message] }
   );
 
-  ({ hash, salt } = generateHash("bcde"));
+  ({ hash, salt } = generateHash("eaglet"));
   await models.User.create(
     {
       username: "eaglet",
@@ -34,7 +33,7 @@ async function seedDB(models) {
     { include: [models.Message] }
   );
 
-  ({ hash, salt } = generateHash("cdef"));
+  ({ hash, salt } = generateHash("rabbit"));
   await models.User.create(
     {
       username: "rabbit",
@@ -49,7 +48,7 @@ async function seedDB(models) {
     { include: [models.Message] }
   );
 
-  ({ hash, salt } = generateHash("ghij"));
+  ({ hash, salt } = generateHash("caterpillar"));
   await models.User.create(
     {
       username: "caterpillar",
