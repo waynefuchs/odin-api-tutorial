@@ -28,15 +28,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Assign user variable
-app.use((req, res, next) => {
-  console.log(
-    "MIDDLEWARE",
-    req.user?.username ? `LOGGED IN AS: ${req.user.username}` : "Not Logged In"
-  );
-  next();
-});
-
 // Routes
 app.use("/", routes.router);
 app.use("/login", routes.login);
