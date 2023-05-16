@@ -30,4 +30,5 @@ content-type: application/json
 
 ###
 
+// Delete a message (using the signed-in user)
 DELETE http://localhost:3000/messages/7
