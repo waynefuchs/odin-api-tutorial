@@ -1,0 +1,17 @@
+GET http://localhost:3000/session
+// GET All Users
+
+###
+
+// LOGIN
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+  "username": "eaglet",
+  "password": "eaglet"
+}
+
+###
+
+GET http://localhost:3000/logout
