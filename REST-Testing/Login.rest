@@ -1,9 +1,9 @@
+// Get All Users
 GET http://localhost:3000/session
-// GET All Users
 
 ###
 
-// LOGIN
+// Log In
 POST http://localhost:3000/login
 content-type: application/json
 
@@ -14,4 +14,5 @@ content-type: application/json
 
 ###
 
+// Log Out
 GET http://localhost:3000/logout
