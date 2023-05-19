@@ -15,4 +15,4 @@ content-type: application/json
 ###
 
 // Log Out
-GET http://localhost:3000/logout
+POST http://localhost:3000/logout

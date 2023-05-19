@@ -13,7 +13,7 @@ login.post(
     failureRedirect: "/login",
   }),
   function (req, res) {
-    res.redirect("/");
+    res.redirect("/session");
   }
 );
 
